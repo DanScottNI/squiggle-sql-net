@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{17D2AA89-7488-49CF-8BD1-CB8092FE0751}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>squiggle</RootNamespace>
+    <AssemblyName>squiggle</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AliasedSelectable.cs" />
+    <Compile Include="Column.cs" />
+    <Compile Include="Criteria.cs" />
+    <Compile Include="Criterias\And.cs" />
+    <Compile Include="Criterias\BaseLogicGroup.cs" />
+    <Compile Include="Criterias\BetweenCriteria.cs" />
+    <Compile Include="Criterias\CriteriaExpression.cs" />
+    <Compile Include="Criterias\InCriteria.cs" />
+    <Compile Include="Criterias\IsNotNullCriteria.cs" />
+    <Compile Include="Criterias\IsNullCriteria.cs" />
+    <Compile Include="Criterias\MatchCriteria.cs" />
+    <Compile Include="Criterias\NoCriteria.cs" />
+    <Compile Include="Criterias\Not.cs" />
+    <Compile Include="Criterias\Or.cs" />
+    <Compile Include="FunctionCall.cs" />
+    <Compile Include="JoinOn.cs" />
+    <Compile Include="Literal.cs" />
+    <Compile Include="Literals\BigDecimalLiteral.cs" />
+    <Compile Include="Literals\BooleanLiteral.cs" />
+    <Compile Include="Literals\DateTimeLiteral.cs" />
+    <Compile Include="Literals\FloatLiteral.cs" />
+    <Compile Include="Literals\IntegerLiteral.cs" />
+    <Compile Include="Literals\LiteralWithSameRepresentationInJavaAndSql.cs" />
+    <Compile Include="Literals\StringLiteral.cs" />
+    <Compile Include="LiteralValueSet.cs" />
+    <Compile Include="Matchable.cs" />
+    <Compile Include="Order.cs" />
+    <Compile Include="Outputs\Output.cs" />
+    <Compile Include="Outputs\Outputable.cs" />
+    <Compile Include="Outputs\ToStringer.cs" />
+    <Compile Include="Parameter.cs" />
+    <Compile Include="Projection.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Selectable.cs" />
+    <Compile Include="SelectQuery.cs" />
+    <Compile Include="Table.cs" />
+    <Compile Include="TableSet.cs" />
+    <Compile Include="ValueSet.cs" />
+    <Compile Include="WildCardColumn.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
