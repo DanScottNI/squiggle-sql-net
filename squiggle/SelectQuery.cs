@@ -18,6 +18,7 @@ namespace squiggle
 
         private List<Selectable> selection = new List<Selectable>();
         private List<Criteria> criteria = new List<Criteria>();
+        private List<JoinOn> joins = new List<JoinOn>();
         private List<Selectable> groupby = new List<Selectable>();
         private List<Criteria> having = new List<Criteria>();
         private List<Order> order = new List<Order>();
@@ -121,6 +122,16 @@ namespace squiggle
             addCriteria(new MatchCriteria(srcTable.getColumn(srcColumnName), op, destTable.getColumn(destColumnName)));
         }
 
+        public void addJoin(JoinType joinType, Table srcTable, String srcColumnname, Table destTable, String destColumnname)
+        {
+            addJoin(new JoinOn(joinType, srcTable.getColumn(srcColumnname), destTable.getColumn(destColumnname)));
+        }
+
+        private void addJoin(JoinOn joinOn)
+        {
+            this.joins.Add(joinOn);
+        }
+
         public void addOrder(Order order)
         {
             this.order.Add(order);
@@ -161,10 +172,20 @@ namespace squiggle
             appendIndentedList(output, selection, ",");
 
             HashSet<Table> tables = findAllUsedTables();
-            if (tables.Any())
+
+            if (tables.Any() || joins.Any())
             {
                 output.println("FROM");
+            }
+
+            if (tables.Any() && !joins.Any())
+            {
                 appendIndentedList(output, tables.ToList(), ",");
+            }
+
+            if (joins.Any())
+            {
+                appendIndentedList(output, joins, " ");
             }
 
             // Add criteria

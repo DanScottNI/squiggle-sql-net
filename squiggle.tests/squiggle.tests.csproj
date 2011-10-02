@@ -51,6 +51,7 @@
     <Compile Include="Example008.cs" />
     <Compile Include="Example009.cs" />
     <Compile Include="Example010.cs" />
+    <Compile Include="Example011.cs" />
     <Compile Include="Matcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
