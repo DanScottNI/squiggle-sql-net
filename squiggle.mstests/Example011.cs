@@ -1,15 +1,15 @@
 ﻿using System;
+using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace squiggle.tests
+namespace squiggle.mstests
 {
-    [TestFixture]
+    [TestClass]
     public class Example011
     {
-        [Test]
+        [TestMethod]
         public void Cascading()
         {
             Table cal_inspection_table = new Table("dbo.CAL_Inspection_table", "cal");
@@ -23,16 +23,14 @@ namespace squiggle.tests
             select.addJoin(JoinType.Inner, cal_inspection_table, "inspect_code", cal_events, "cal_type");
             select.addJoin(JoinType.Inner, cal_events, "cal_phase_code", cal_phase, "phase_id");
 
-
-
-            Assert.That(Matcher.Normalize(select.ToString()), Is.EqualTo(Matcher.Normalize((
+            Assert.AreEqual((Matcher.Normalize(
                     @"SELECT     cal.*
 FROM         dbo.CAL_Inspection_table AS cal INNER JOIN
                       dbo.CAL_Events AS ce ON cal.Inspect_code = ce.Cal_type INNER JOIN
-                      dbo.Cal_Phase AS cp ON ce.Cal_Phase_code = cp.phase_id"))));
+                      dbo.Cal_Phase AS cp ON ce.Cal_Phase_code = cp.phase_id")), Matcher.Normalize(select.ToString()));
         }
 
-        [Test]
+        [TestMethod]
         public void SameTable()
         {
             Table insp_inspectors = new Table("dbo.insp_inspectors", "i");
@@ -46,14 +44,14 @@ FROM         dbo.CAL_Inspection_table AS cal INNER JOIN
             select.addJoin(JoinType.Inner, insp_inspectors, "town_id", towns, "town_id");
             select.addJoin(JoinType.Inner, insp_inspectors, "county_id", counties, "county_id");
 
-            Assert.That(Matcher.Normalize(select.ToString()), Is.EqualTo(Matcher.Normalize(
+            Assert.AreEqual(Matcher.Normalize(select.ToString()), (Matcher.Normalize((
                    @"SELECT     i.*
 FROM         dbo.INSP_Inspectors AS i INNER JOIN
                       dbo.Towns AS t ON i.Town_ID = t.Town_ID INNER JOIN
-                      dbo.Counties AS c ON i.County_ID = c.County_ID")));
+                      dbo.Counties AS c ON i.County_ID = c.County_ID"))));
         }
 
-        [Test]
+        [TestMethod]
         public void SelfReferencial()
         {
             Table cal_inspection_table = new Table("dbo.CAL_Inspection_table", "cal");
@@ -65,13 +63,13 @@ FROM         dbo.INSP_Inspectors AS i INNER JOIN
 
             select.addJoin(JoinType.LeftOuterJoin, cal_inspection_table, "original_insp_id", parent_insp, "insp_id");
 
-            Assert.That(Matcher.Normalize(select.ToString()), Is.EqualTo(Matcher.Normalize((
+            Assert.AreEqual(Matcher.Normalize(select.ToString()), (Matcher.Normalize((
                     @"SELECT     cal.*
 FROM         dbo.CAL_Inspection_table AS cal LEFT OUTER JOIN
                       dbo.CAL_Inspection_table AS parent_insp ON cal.original_insp_id = parent_insp.Insp_ID"))));
         }
 
-        [Test]
+        [TestMethod]
         public void ComplexJoin()
         {
             Table mars_proforma_type = new Table("dbo.mars_proforma_type", "rp");
@@ -96,11 +94,12 @@ FROM         dbo.CAL_Inspection_table AS cal LEFT OUTER JOIN
             select.addJoin(JoinType.Inner, mars_proforma_subj_map, "parent_proforma_subj_id", mars_proforma_subj, "subj_id");
             select.addJoin(JoinType.Inner, mars_proforma_subj, "mars_proforma_type_id", mars_proforma_type, "mars_proforma_type_id");
 
-            Assert.That(Matcher.Normalize(select.ToString()), Is.EqualTo(Matcher.Normalize("select pro.mars_proforma_id , insp.leadership_management as leadership_man , null as how_effective_leadership , " +
+            Assert.AreEqual(Matcher.Normalize("select pro.mars_proforma_id , insp.leadership_management as leadership_man , null as how_effective_leadership , " +
                "insp.leadership_comments , rp.database_name , rp.proforma_type_name , rp.mars_proforma_type_id , pro.date_updated " +
 "from dbo.mars_proforma as pro inner join dbo.mars_proforma_legacy_fe as insp on pro.mars_proforma_id = insp.mars_proforma_id inner join " +
 "dbo.mars_proforma_subj_map as map on pro.subj_id = map.chl_proforma_subj_id inner join dbo.mars_proforma_subj as s on map.parent_proforma_subj_id " +
-"= s.subj_id inner join dbo.mars_proforma_type as rp on s.mars_proforma_type_id = rp.mars_proforma_type_id")));
+"= s.subj_id inner join dbo.mars_proforma_type as rp on s.mars_proforma_type_id = rp.mars_proforma_type_id"),
+                 Matcher.Normalize(select.ToString()));
         }
     }
 }

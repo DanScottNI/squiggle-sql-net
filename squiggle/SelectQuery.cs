@@ -33,8 +33,8 @@ namespace squiggle
         }
 
         /**
-	 * Syntax sugar for addToGroupBy(Column).
-	 */
+     * Syntax sugar for addToGroupBy(Column).
+     */
         public void addGroupByColumn(Table table, String columname)
         {
             addToGroupBy(table.getColumn(columname));
@@ -65,7 +65,7 @@ namespace squiggle
          */
         public void addColumn(Table table, String columname)
         {
-            addToSelection(table.getColumn(columname));
+            addToSelection(table != null ? table.getColumn(columname) : null);
         }
 
         /**
@@ -73,7 +73,7 @@ namespace squiggle
       */
         public void addColumn(Table table, String columname, String columnAlias)
         {
-            addToSelection(table.getColumn(columname), columnAlias);
+            addToSelection(table != null ? table.getColumn(columname) : null, columnAlias);
         }
 
         public void removeFromSelection(Selectable selectable)
@@ -185,7 +185,8 @@ namespace squiggle
 
             if (joins.Any())
             {
-                appendIndentedList(output, joins, " ");
+                appendJoinList(output, joins);
+                // appendIndentedList(output, joins, " ");
             }
 
             // Add criteria
@@ -214,6 +215,46 @@ namespace squiggle
             {
                 output.println("ORDER BY");
                 appendIndentedList(output, order, ",");
+            }
+        }
+
+        private void appendJoinList(Output output, List<JoinOn> joins)
+        {
+            List<Table> addedTables = new List<Table>();
+
+            for (int i = 0; i < joins.Count; i++)
+            {
+                JoinOn join = joins[i];
+
+                output.print(" ");
+
+                if (!addedTables.Contains(join.SourceColumn.table))
+                {
+                    join.SourceColumn.table.write(output);
+                    addedTables.Add(join.SourceColumn.table);
+                }
+
+                switch (join.JoinType)
+                {
+                    case JoinType.Inner: output.print(" INNER JOIN "); break;
+                    case JoinType.LeftOuterJoin: output.print(" LEFT OUTER JOIN "); break;
+                    case JoinType.RightOuterJoin: output.print(" RIGHT OUTER JOIN "); break;
+                }
+
+                output.print(" ");
+                join.DestColumn.table.write(output);
+
+                if (!addedTables.Contains(join.DestColumn.table))
+                {
+                    addedTables.Add(join.DestColumn.table);
+                }
+
+                output.print(" ON ");
+                join.SourceColumn.write(output);
+                output.print(" = ");
+                join.DestColumn.write(output);
+
+                output.print(' ');
             }
         }
 
@@ -247,20 +288,6 @@ namespace squiggle
                     output.println();
                 }
             }
-
-            //Iterator<? extends Outputable> i = collection.iterator();
-            //boolean hasNext = i.hasNext();
-
-            //while (hasNext) {
-            //    Outputable curr = (Outputable) i.next();
-            //    hasNext = i.hasNext();
-            //    curr.write(out);
-            //    out.print(' ');
-            //    if (hasNext) {
-            //        out.print(seperator);
-            //    }
-            //    out.println();
-            //}
         }
 
         /**

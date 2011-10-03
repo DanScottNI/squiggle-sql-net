@@ -19,12 +19,23 @@ namespace squiggle
 
         public void addReferencedTablesTo(HashSet<Table> tables)
         {
-            this.selectable.addReferencedTablesTo(tables);
+            if (this.selectable != null)
+            {
+                this.selectable.addReferencedTablesTo(tables);
+            }
         }
 
         public void write(Output output)
         {
-            this.selectable.write(output);
+            if (this.selectable != null)
+            {
+                this.selectable.write(output);
+            }
+            else
+            {
+                output.print("NULL");
+            }
+
             output.print(" AS ").print(this.alias);
         }
     }

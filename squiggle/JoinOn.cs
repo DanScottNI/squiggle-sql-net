@@ -5,6 +5,13 @@ using System.Text;
 
 namespace squiggle
 {
+    public enum JoinType
+    {
+        Inner,
+        LeftOuterJoin,
+        RightOuterJoin
+    }
+
     public class JoinOn : Criteria
     {
         public JoinType JoinType { get; set; }
@@ -21,15 +28,20 @@ namespace squiggle
         public override void write(Outputs.Output output)
         {
             output.print(" ");
+
+            SourceColumn.table.write(output);
+
             switch (JoinType)
             {
-                case JoinType.CrossJoin: output.print("CROSS JOIN"); break;
-                case JoinType.Inner: output.print("INNER JOIN"); break;
-                case JoinType.LeftOuterJoin: output.print("LEFT JOIN"); break;
-                case JoinType.RightOuterJoin: output.print("RIGHT JOIN"); break;
+                case JoinType.Inner: output.print(" INNER JOIN "); break;
+                case JoinType.LeftOuterJoin: output.print(" LEFT JOIN "); break;
+                case JoinType.RightOuterJoin: output.print(" RIGHT JOIN "); break;
             }
+
             output.print(" ");
-            SourceColumn.table.write(output);
+
+            DestColumn.table.write(output);
+
             output.print(" ON ");
             SourceColumn.write(output);
             output.print(" = ");
