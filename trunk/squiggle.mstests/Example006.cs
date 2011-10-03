@@ -1,15 +1,15 @@
 ﻿using System;
+using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace squiggle.tests
+namespace squiggle.mstests
 {
-    [TestFixture]
+    [TestClass]
     public class Example006
     {
-        [Test]
+        [TestMethod]
         public void tableAliases()
         {
             Table employees = new Table("people", "employees");
@@ -22,13 +22,13 @@ namespace squiggle.tests
 
             select.addJoin(employees, "managerID", managers, "id");
 
-            Assert.That(Matcher.Normalize(select.ToString()), Is.EqualTo( Matcher.Normalize((
+            Assert.AreEqual(Matcher.Normalize(select.ToString()), (Matcher.Normalize((
                     "SELECT " +
                     "    employees.firstname , " +
                     "    managers.firstname " +
                     "FROM " +
                     "    people AS employees , " +
-                    "    people AS managers " +
+                    "    people AS  managers " +
                     "WHERE " +
                     "    employees.managerID = managers.id"))));
         }
