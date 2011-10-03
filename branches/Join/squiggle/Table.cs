@@ -88,7 +88,7 @@ namespace squiggle
             output.print(getName());
             if (hasAlias())
             {
-                output.print(' ');
+                output.print(" AS ");
                 output.print(getAlias());
             }
         }

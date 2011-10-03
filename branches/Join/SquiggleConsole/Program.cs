@@ -11,17 +11,31 @@ namespace SquiggleConsole
     {
         static void Main(string[] args)
         {
+            Table cal_inspection_table = new Table("dbo.CAL_Inspection_table", "cal");
+            Table cal_events = new Table("dbo.CAL_Events", "ce");
+            Table cal_phase = new Table("dbo.Cal_Phase", "cp");
+
+            SelectQuery select = new SelectQuery(); // base table
+
+            select.addColumn(cal_inspection_table, "*");
+
+            select.addJoin(JoinType.Inner, cal_inspection_table, "inspect_code", cal_events, "cal_type");
+            select.addJoin(JoinType.Inner, cal_events, "cal_phase_code", cal_phase, "phase_id");
+
+            Console.WriteLine(select.ToString());
+            Console.ReadLine();
+
             Table company_attendee = new Table("company_attendee");
             Table company = new Table("company");
             Table conference_details = new Table("conference_details");
 
-            SelectQuery select = new SelectQuery(); // base table
+            select = new SelectQuery(); // base table
 
             select.addColumn(company, "*");
             select.addColumn(company_attendee, "*");
             select.addColumn(conference_details, "*");
 
-            select.addJoin(JoinType.Inner, company_attendee, "company_id", company, "company_id", new JoinOn();
+            //select.addJoin(JoinType.Inner, company_attendee, "company_id", company, "company_id", new JoinOn());
             select.addJoin(JoinType.Inner, company, "conference_details_id", conference_details, "conference_details_id");
 
             //select.addJoin(JoinType.Inner, people, "departmentID", departments, "id");

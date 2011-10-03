@@ -76,7 +76,6 @@
     <Compile Include="Selectable.cs" />
     <Compile Include="SelectQuery.cs" />
     <Compile Include="Table.cs" />
-    <Compile Include="TableSet.cs" />
     <Compile Include="ValueSet.cs" />
     <Compile Include="WildCardColumn.cs" />
   </ItemGroup>
